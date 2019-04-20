@@ -1,0 +1,1 @@
+INSERT INTO BodyStyles (BodyStyle) VALUES ('Coupe'), ('Convertible');

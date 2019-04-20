@@ -1,0 +1,1 @@
+INSERT INTO Manufacturers (Manufacturer) VALUES ('Germany'), ('USA'), ('England');

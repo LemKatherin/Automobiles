@@ -1,0 +1,1 @@
+CREATE TABLE Manufacturers (_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, Manufacturer TEXT NOT NULL CONSTRAINT ManufacturerCK CHECK (Manufacturer NOT LIKE '%[0-9!-,.-~]%'));

@@ -1,0 +1,1 @@
+CREATE TABLE Brands (_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, Brand TEXT NOT NULL CONSTRAINT BrandCK CHECK (Brand NOT LIKE '%[0-9!-,.-~]%'), _idManufacturer INTEGER NOT NULL, CONSTRAINT BrandManufacturerFK FOREIGN KEY (_idManufacturer) REFERENCES Manufacturers (_id));
