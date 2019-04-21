@@ -27,7 +27,9 @@ public class MainActivityPresenter {
         PRICE,
         BRAND,
         MANUFACTURER,
-        SEARCH
+        SEARCH,
+        AUTOMOBILE,
+        BRMAN
     }
 
    /* public MainActivityPresenter(DataMapper dataModel) {
@@ -93,8 +95,8 @@ public class MainActivityPresenter {
                     case PRICE:
                         cardContent = dataModel.toStringArrayList(dataModel.find(DataMapper.PRICE, ""));
                         break;
-                    case SEARCH:
-                        cardContent = dataModel.toStringArrayList(dataModel.find(DataMapper.NAME, ""));
+                    case BRAND:
+                        cardContent = dataModel.toStringArrayList(dataModel.find(DataMapper.BRAND, ""));
                         break;
                 }
                 break;
@@ -102,11 +104,19 @@ public class MainActivityPresenter {
         return cardContent;
     }
 
-    public ArrayList<String[]> searchQuery(String query){
+
+    public ArrayList<String[]> searchQuery(FILTERS mapper,String query){
         ArrayList<String[]> cardContent = new ArrayList<>();
         if(!query.isEmpty()) {
             //cardContent = getCardContentFilter(MAPPERS.AUTOMOBILE, FILTERS.SEARCH);
-            cardContent = dataModel.toStringArrayList(dataModel.find(DataMapper.NAME, query));
+            switch (mapper) {
+                case AUTOMOBILE:
+                    cardContent = dataModel.toStringArrayList(dataModel.find(DataMapper.NAME, query));
+                    break;
+                case BRAND:
+                    cardContent = dataModel.toStringArrayList(dataModel.find(DataMapper.BRAND, query));
+                    break;
+            }
             if (cardContent.isEmpty()) {
                 activityView.showToast("Ничего не найдено!");
             }
@@ -116,9 +126,39 @@ public class MainActivityPresenter {
         return cardContent;
     }
 
+    public ArrayList<String[]> filter(FILTERS mapper, ArrayList<String> query){
+        ArrayList<String[]> cardContent = new ArrayList<>();
+        if(!query.isEmpty()) {
+            String strings = "";
+            for(String string: query){
+                if(!strings.isEmpty()) strings += ",";
+                strings = strings + "'" + string + "'";
+            }
+            switch (mapper) {
+                case BRAND:
+                    cardContent = dataModel.toStringArrayList(dataModel.filter(DataMapper.BRAND, strings));
+                    break;
+                case MANUFACTURER:
+                    cardContent = dataModel.toStringArrayList(dataModel.filter(DataMapper.MANUFACTURER, strings));
+                    break;
+            }
+            if (cardContent.isEmpty()) {
+                activityView.showToast("Ничего не найдено!");
+            }
+        } else {
+            if(dataModel.getClass() == BrandMapper.class)
+                cardContent = getCardContent(MAPPERS.BRAND);
+            if(dataModel.getClass() == AutomobileMapper.class)
+                cardContent = getCardContent(MAPPERS.AUTOMOBILE);
+        }
+        return cardContent;
+    }
+
     public void removeItem(String id){
         dataModel = new AutomobileMapper();
         dataModel.delete(id);
     }
+
+
 
 }

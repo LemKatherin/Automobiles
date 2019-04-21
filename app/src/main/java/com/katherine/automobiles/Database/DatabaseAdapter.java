@@ -203,41 +203,27 @@ public class DatabaseAdapter {
     public ArrayList<CommonEntity> getAutoesOfBrand(String id){
         ArrayList<CommonEntity> automobiles = new ArrayList<>();
 
-        Cursor cursor = database.query("Automobiles",
-                new String[]{"_id", "AutoModel", "_idBrand", "Photo", "ProductYear", "Seats", "_idBodyStyle", "FuelType", "Transmission", "Price"},
-                "_idBrand = ?",new String[] {id},null,null,"_idBrand");
+        Cursor cursor = database.rawQuery("select Automobiles._id, AutoModel, Photo, ProductYear, " +
+                "Seats, FuelType, Transmission, Price, Brands._id, Brand, Manufacturers._id, Manufacturer, " +
+                "BodyStyles._id, BodyStyle " +
+                "from Automobiles join Brands on _idBrand = Brands._id " +
+                "join Manufacturers on Brands._idManufacturer = Manufacturers._id " +
+                "join BodyStyles on _idBodyStyle = BodyStyles._id " +
+                "where _idBrand in (" + id + ")", new String[]{});
 
         if(cursor.getCount() != 0) {
             cursor.moveToFirst();
             for (int i = 0; i < cursor.getCount(); i++) {
-
-
-                Automobile automobile = new Automobile(cursor.getInt(0), cursor.getString(1), cursor.getString(3), cursor.getInt(4), cursor.getInt(5), cursor.getString(7), cursor.getString(8), cursor.getDouble(9));
-
-                String idBrand = cursor.getString(2);
-                String idBodyStyle = cursor.getString(6);
-
-                Cursor smallCursor = database.rawQuery("select Brands._id, Brand, Manufacturers._id, Manufacturer  " +
-                        "from Brands join Manufacturers on Brands._idManufacturer = Manufacturer._id " +
-                        "where Brands._id = ? ", new String[]{idBrand});
-                smallCursor.moveToFirst();
-                automobile.setBrand(new Brand(smallCursor.getInt(0), smallCursor.getString(1), new Manufacturer(smallCursor.getInt(2), smallCursor.getString(3))));
-
-                smallCursor = database.rawQuery("select _id, BodyStyle  " +
-                        "from BodyStyles " +
-                        "where _id = ? ", new String[]{idBodyStyle});
-
-                smallCursor.moveToFirst();
-                automobile.setBodyStyle(new BodyStyle(smallCursor.getInt(0), smallCursor.getString(1)));
-
+                Automobile automobile = new Automobile(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getInt(3), cursor.getInt(4), cursor.getString(5), cursor.getString(6), cursor.getDouble(7));
+                automobile.setBodyStyle(new BodyStyle(cursor.getInt(12), cursor.getString(13)));
+                automobile.setBrand(new Brand(cursor.getInt(8), cursor.getString(9)));
+                automobile.getBrand().setManufacturer(new Manufacturer(cursor.getInt(10), cursor.getString(11)));
                 automobiles.add(automobile);
-                smallCursor.close();
-
                 cursor.moveToNext();
             }
             cursor.close();
             return automobiles;
-        } else{
+        } else {
             cursor.close();
             return null;
         }
@@ -247,42 +233,27 @@ public class DatabaseAdapter {
     public ArrayList<CommonEntity> getAutoesOfManufacturer(String id){
         ArrayList<CommonEntity> automobiles = new ArrayList<>();
 
-
-        Cursor cursor = database.rawQuery("select _id ,AutoModel, _idBrand, Photo, ProductYear, Seats, _idBodyStyle, FuelType, Transmission, Price, _idManufacturer " +
+        Cursor cursor = database.rawQuery("select Automobiles._id, AutoModel, Photo, ProductYear, " +
+                "Seats, FuelType, Transmission, Price, Brands._id, Brand, Manufacturers._id, Manufacturer, " +
+                "BodyStyles._id, BodyStyle " +
                 "from Automobiles join Brands on _idBrand = Brands._id " +
-                "join Manufacturers on  _idManufacturer = Manufacturers._id " +
-                "where Manufacturers._id = ?", new String[]{id});
+                "join Manufacturers on Brands._idManufacturer = Manufacturers._id " +
+                "join BodyStyles on _idBodyStyle = BodyStyles._id " +
+                "where _idManufacturer in (" + id + ")", new String[]{});
 
         if(cursor.getCount() != 0) {
             cursor.moveToFirst();
             for (int i = 0; i < cursor.getCount(); i++) {
-
-                Automobile automobile = new Automobile(cursor.getInt(0), cursor.getString(1), cursor.getString(3), cursor.getInt(4), cursor.getInt(5), cursor.getString(7), cursor.getString(8), cursor.getDouble(9));
-
-                String idBrand = cursor.getString(2);
-                String idBodyStyle = cursor.getString(6);
-
-                Cursor smallCursor = database.rawQuery("select Brands._id, Brand, Manufacturers._id, Manufacturer  " +
-                        "from Brands join Manufacturers on Brands._idManufacturer = Manufacturer._id " +
-                        "where Brands._id = ? ", new String[]{idBrand});
-                smallCursor.moveToFirst();
-                automobile.setBrand(new Brand(smallCursor.getInt(0), smallCursor.getString(1), new Manufacturer(smallCursor.getInt(2), smallCursor.getString(3))));
-
-                smallCursor = database.rawQuery("select _id, BodyStyle  " +
-                        "from BodyStyles " +
-                        "where _id = ? ", new String[]{idBodyStyle});
-
-                smallCursor.moveToFirst();
-                automobile.setBodyStyle(new BodyStyle(smallCursor.getInt(0), smallCursor.getString(1)));
-
+                Automobile automobile = new Automobile(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getInt(3), cursor.getInt(4), cursor.getString(5), cursor.getString(6), cursor.getDouble(7));
+                automobile.setBodyStyle(new BodyStyle(cursor.getInt(12), cursor.getString(13)));
+                automobile.setBrand(new Brand(cursor.getInt(8), cursor.getString(9)));
+                automobile.getBrand().setManufacturer(new Manufacturer(cursor.getInt(10), cursor.getString(11)));
                 automobiles.add(automobile);
-                smallCursor.close();
-
                 cursor.moveToNext();
             }
             cursor.close();
             return automobiles;
-        } else{
+        } else {
             cursor.close();
             return null;
         }
@@ -357,8 +328,8 @@ public class DatabaseAdapter {
         ArrayList<CommonEntity> brands = new ArrayList<>();
 
         Cursor cursor = database.rawQuery("select Brands._id, Brand, Manufacturers._id, Manufacturer  " +
-                "from Brands join Manufacturers on Brands._idManufacturer = Manufacturer._id " +
-                "where Manufacturers._id = ? ", new String[]{id});
+                "from Brands join Manufacturers on Brands._idManufacturer = Manufacturers._id " +
+                "where _idManufacturer in (" + id + ")", new String[]{});
 
         cursor.moveToFirst();
         for(int i = 0; i<cursor.getCount(); i++){

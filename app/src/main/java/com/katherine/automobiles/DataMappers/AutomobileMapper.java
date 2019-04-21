@@ -34,14 +34,14 @@ public class AutomobileMapper extends DataMapper {
                 }
                 return automobiles;
 
-            case BRAND:
+           /* case BRAND:
                 try {
                     dbadapter = dbadapter.open();
                     automobiles = dbadapter.getAutoesOfBrand(search);
                 } catch (SQLiteException ex){
 
                 }
-                return automobiles;
+                return automobiles;*/
 
             case MANUFACTURER:
                 try {
@@ -62,6 +62,33 @@ public class AutomobileMapper extends DataMapper {
 
                 default:
                     return null;
+        }
+    }
+
+    @Override
+    public ArrayList<CommonEntity> filter(String criteria, String query) {
+        ArrayList<CommonEntity> automobiles = new ArrayList<>();
+
+        switch (criteria){
+            case BRAND:
+                try {
+                    dbadapter = dbadapter.open();
+                    automobiles = dbadapter.getAutoesOfBrand(query);
+                } catch (SQLiteException ex){
+
+                }
+                return automobiles;
+
+            case MANUFACTURER:
+                try {
+                    dbadapter = dbadapter.open();
+                    automobiles = dbadapter.getAutoesOfManufacturer(query);
+                } catch (SQLiteException ex){
+
+                }
+                return automobiles;
+            default:
+                return null;
         }
     }
 

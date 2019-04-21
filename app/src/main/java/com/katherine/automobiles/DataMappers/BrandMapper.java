@@ -13,15 +13,6 @@ public class BrandMapper extends DataMapper {
         ArrayList<CommonEntity> brands = new ArrayList<>();
 
         switch (criteria){
-            case MANUFACTURER:
-                try {
-                    dbadapter = dbadapter.open();
-                    brands = dbadapter.getBrandsOfManufacturer(search);
-                } catch (SQLiteException ex){
-
-                }
-                return brands;
-
             case ALL:
                 try {
                     dbadapter = dbadapter.open();
@@ -33,6 +24,24 @@ public class BrandMapper extends DataMapper {
 
                 default:
                     return null;
+        }
+    }
+
+    @Override
+    public ArrayList<CommonEntity> filter(String criteria, String query) {
+        ArrayList<CommonEntity> brands = new ArrayList<>();
+
+        switch (criteria){
+            case MANUFACTURER:
+                try {
+                    dbadapter = dbadapter.open();
+                    brands = dbadapter.getBrandsOfManufacturer(query);
+                } catch (SQLiteException ex){
+
+                }
+                return brands;
+            default:
+                return null;
         }
     }
 

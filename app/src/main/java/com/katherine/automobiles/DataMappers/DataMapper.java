@@ -22,6 +22,8 @@ public abstract class DataMapper {
     public abstract void update(CommonEntity entity);
     public abstract void delete(String id);
 
+    public  ArrayList<CommonEntity> filter(String criteria, String query){return  null;}
+
     public ArrayList<String[]> toStringArrayList(ArrayList<CommonEntity> listEntities){
         ArrayList<String[]> stringListEntities = new ArrayList<>();
 
