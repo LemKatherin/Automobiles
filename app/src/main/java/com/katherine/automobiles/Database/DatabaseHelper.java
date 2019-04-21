@@ -16,7 +16,7 @@ import static android.support.constraint.Constraints.TAG;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static String DB_PATH; // полный путь к базе данных
-    static final String DB_NAME = "Automobiles.db";
+    static final String DB_NAME = "AutomobilesDB.db";
     private static final int myVersion = 1; // версия базы данных
     private Context myContext;
 

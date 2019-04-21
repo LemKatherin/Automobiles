@@ -39,6 +39,12 @@ public class Automobile extends CommonEntity {
         this.price = price;
     }
 
+    @Override
+    public String[] toStringArray() {
+        return new String[]{String.valueOf(id), brand.getName(), name, photo, String.valueOf(productYear), String.valueOf(seats),
+        bodyStyle.getName(), fuelType, transmission, String.valueOf(price)};
+    }
+
     public Brand getBrand() {
         return brand;
     }

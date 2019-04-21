@@ -1,9 +1,11 @@
 package com.katherine.automobiles.Entities;
 
+import java.util.ArrayList;
+
 public class CommonEntity {
 
-    private int id;
-    private String name;
+    protected int id;
+    protected String name;
 
     public int getId() {
         return id;
@@ -35,4 +37,9 @@ public class CommonEntity {
     public CommonEntity(int id) {
         this.id = id;
     }
+
+    public String[] toStringArray(){
+        return new String[]{String.valueOf(id), name};
+    }
+
 }

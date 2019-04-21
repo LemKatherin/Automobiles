@@ -8,5 +8,7 @@ public class Manufacturer extends CommonEntity {
         super(id, name);
     }
 
-
+    public Manufacturer(int id) {
+        super(id);
+    }
 }

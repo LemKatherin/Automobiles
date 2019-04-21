@@ -17,14 +17,14 @@ public class AutomobileMapper extends DataMapper {
         ArrayList<CommonEntity> automobiles = new ArrayList<>();
 
         switch (criteria){
-            /*case NAME:
+            case NAME:
                 try{
                     dbadapter = dbadapter.open();
-                    recipes = dbadapter.getRecipes(search);
+                    automobiles = dbadapter.getAutoes(search);
                 } catch (SQLiteException ex){
 
                 }
-                return recipes;*/
+                return automobiles;
             case ALL:
                 try{
                     dbadapter = dbadapter.open();
@@ -51,6 +51,15 @@ public class AutomobileMapper extends DataMapper {
 
                 }
                 return automobiles;
+            case PRICE:
+                try {
+                    dbadapter = dbadapter.open();
+                    automobiles = dbadapter.getPriceSorted();
+                } catch (SQLiteException ex){
+
+                }
+                return automobiles;
+
                 default:
                     return null;
         }

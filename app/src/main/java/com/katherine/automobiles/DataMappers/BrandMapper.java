@@ -22,6 +22,15 @@ public class BrandMapper extends DataMapper {
                 }
                 return brands;
 
+            case ALL:
+                try {
+                    dbadapter = dbadapter.open();
+                    brands = dbadapter.getBrands();
+                } catch (SQLiteException ex){
+
+                }
+                return brands;
+
                 default:
                     return null;
         }
