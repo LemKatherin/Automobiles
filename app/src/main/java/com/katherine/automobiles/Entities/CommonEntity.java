@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class CommonEntity {
 
     protected int id;
-    protected String name;
+    protected String name = "";
 
     public int getId() {
         return id;
@@ -40,6 +40,16 @@ public class CommonEntity {
 
     public String[] toStringArray(){
         return new String[]{String.valueOf(id), name};
+    }
+
+    public static String[] toNameArray(ArrayList<CommonEntity> entities){
+        String[] names = new String[entities.size()];
+        int i = 0;
+        for (CommonEntity entity: entities){
+            names[i] = entity.getName();
+            i++;
+        }
+        return names;
     }
 
 }

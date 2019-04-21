@@ -101,6 +101,15 @@ public class MainActivity extends AppCompatActivity implements ActivityView {
             }
         });
 
+        addFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), NewAutoActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
         CardsTextCheckAdapter cardsTextCheckAdapterBrands = new CardsTextCheckAdapter(presenter.getCardContent(MainActivityPresenter.MAPPERS.BRAND));
         brandsRecyclerView.setAdapter(cardsTextCheckAdapterBrands);
         GridLayoutManager gridLayoutManagerBrands = new GridLayoutManager(this, 2);
@@ -184,10 +193,10 @@ public class MainActivity extends AppCompatActivity implements ActivityView {
                 autoesRecyclerView.getAdapter().notifyDataSetChanged();
                 return true;
             default:
-               /* position = ((CardForRecipeAdapter)recipesRecycler.getAdapter()).getPosition();
+                position = ((CardAdapter)autoesRecyclerView.getAdapter()).getPosition();
                 //   Recipe recipe = (Recipe) recipeMapper.find(DataMapper.ID, String.valueOf(((Recipe)entities.get(position)).getId()));
-                Intent intent = new Intent(getActivity(),NewRecipeActivity.class);
-                intent.putExtra(NewRecipeActivity.RECIPE_ID, (entities.get(position)).getId());
+                Intent intent = new Intent(this,NewAutoActivity.class);
+                intent.putExtra(NewAutoActivity.AUTO_ID, (((CardAdapter)autoesRecyclerView.getAdapter()).getContents().get(position)[0]));
                 startActivity(intent);
                 //recipeMapper.update();*/
                 return true;

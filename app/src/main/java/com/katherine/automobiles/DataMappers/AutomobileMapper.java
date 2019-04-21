@@ -90,8 +90,11 @@ public class AutomobileMapper extends DataMapper {
 
 
     @Override
-    public void update(String criteria, CommonEntity entity) {
-        switch (criteria){
+    public void update(CommonEntity entity) {
+        try{
+            dbadapter = dbadapter.open();
+            dbadapter.updateAuto((Automobile)entity);
+        } catch (SQLiteException ex){
 
         }
     }

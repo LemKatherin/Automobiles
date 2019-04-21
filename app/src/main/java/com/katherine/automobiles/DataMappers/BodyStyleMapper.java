@@ -36,7 +36,7 @@ public class BodyStyleMapper extends DataMapper {
     }
 
     @Override
-    public void update(String criteria, CommonEntity entity) {
+    public void update(CommonEntity entity) {
 
     }
 

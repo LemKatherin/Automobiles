@@ -1,38 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/card_view"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="5dp"
-    card_view:cardCornerRadius="4dp">
-
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".NewAutoActivity"
+    tools:showIn="@layout/activity_new_auto">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/modelTextView"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="5dp"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:orientation="horizontal">
+
+            <Spinner
+                android:id="@+id/brandSpinner"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+            <EditText
+                android:id="@+id/modelTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="@string/model"
+                android:paddingLeft="5dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+        </LinearLayout>
 
         <ImageView
             android:id="@+id/photoImageView"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:layout_gravity="center"
-            card_view:srcCompat="?attr/colorButtonNormal" />
+            android:src="?attr/colorButtonNormal" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <ImageView
@@ -44,23 +58,15 @@
                 android:paddingLeft="2dp"
                 android:paddingTop="2dp"
                 android:paddingBottom="2dp"
-                card_view:srcCompat="@android:drawable/ic_menu_my_calendar" />
+                android:src="@android:drawable/ic_menu_my_calendar" />
 
-            <TextView
-                android:id="@+id/yearTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
-                android:text="@string/year_points"
-                android:textSize="18sp" />
-
-            <TextView
+            <EditText
                 android:id="@+id/yearValueTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:hint="@string/year"
+                android:inputType="number"
                 android:paddingLeft="5dp"
                 android:paddingTop="5dp"
                 android:paddingBottom="5dp"
@@ -75,23 +81,15 @@
                 android:paddingLeft="2dp"
                 android:paddingTop="2dp"
                 android:paddingBottom="2dp"
-                card_view:srcCompat="@drawable/seat" />
+                android:src="@drawable/seat" />
 
-            <TextView
-                android:id="@+id/seatsTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
-                android:text="@string/seats_points"
-                android:textSize="18sp" />
-
-            <TextView
+            <EditText
                 android:id="@+id/seatsValueTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:hint="@string/seats"
+                android:inputType="number"
                 android:paddingLeft="5dp"
                 android:paddingTop="5dp"
                 android:paddingBottom="5dp"
@@ -106,23 +104,15 @@
                 android:paddingLeft="2dp"
                 android:paddingTop="2dp"
                 android:paddingBottom="2dp"
-                card_view:srcCompat="@drawable/price" />
+                android:src="@drawable/price" />
 
-            <TextView
-                android:id="@+id/priceTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
-                android:text="@string/price_points"
-                android:textSize="18sp" />
-
-            <TextView
+            <EditText
                 android:id="@+id/priceValueTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:hint="@string/price"
+                android:inputType="numberDecimal"
                 android:paddingLeft="5dp"
                 android:paddingTop="5dp"
                 android:paddingBottom="5dp"
@@ -131,7 +121,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <ImageView
@@ -143,31 +133,19 @@
                 android:paddingLeft="2dp"
                 android:paddingTop="2dp"
                 android:paddingBottom="2dp"
-                card_view:srcCompat="@drawable/body" />
+                android:src="@drawable/body" />
 
-            <TextView
-                android:id="@+id/bodyTextView"
+            <Spinner
+                android:id="@+id/bodyStyleSpinner"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
-                android:text="@string/body_style_points"
-                android:textSize="18sp" />
+                android:layout_height="match_parent"
+                android:layout_weight="6" />
 
-            <TextView
-                android:id="@+id/bodyValueTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="7"
-                android:paddingLeft="5dp"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
-                android:textSize="18sp" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <ImageView
@@ -179,22 +157,14 @@
                 android:paddingLeft="2dp"
                 android:paddingTop="2dp"
                 android:paddingBottom="2dp"
-                card_view:srcCompat="@drawable/fuel" />
+                android:src="@drawable/fuel" />
 
-            <TextView
-                android:id="@+id/fuelTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
-                android:text="@string/fuel_type_points"
-                android:textSize="18sp" />
-
-            <TextView
+            <EditText
                 android:id="@+id/fuelValueTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="7"
+                android:hint="@string/fuel_type"
                 android:paddingLeft="5dp"
                 android:paddingTop="5dp"
                 android:paddingBottom="5dp"
@@ -204,7 +174,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <ImageView
@@ -216,22 +186,14 @@
                 android:paddingLeft="2dp"
                 android:paddingTop="2dp"
                 android:paddingBottom="2dp"
-                card_view:srcCompat="@drawable/transmission" />
+                android:src="@drawable/transmission" />
 
-            <TextView
-                android:id="@+id/transmissionTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
-                android:text="@string/transmission_points"
-                android:textSize="18sp" />
-
-            <TextView
+            <EditText
                 android:id="@+id/transmissionValueTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="7"
+                android:hint="@string/transmission"
                 android:paddingLeft="5dp"
                 android:paddingTop="5dp"
                 android:paddingBottom="5dp"
@@ -239,4 +201,5 @@
         </LinearLayout>
 
     </LinearLayout>
-</android.support.v7.widget.CardView>
+
+</android.support.constraint.ConstraintLayout>

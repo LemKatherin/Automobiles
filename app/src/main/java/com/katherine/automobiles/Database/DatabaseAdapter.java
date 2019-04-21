@@ -291,43 +291,47 @@ public class DatabaseAdapter {
 
     public CommonEntity getAuto(String id) {
 
-        Cursor cursor = database.rawQuery("select _id ,AutoModel, _idBrand, Photo, ProductYear, Seats, _idBodyStyle, FuelType, Transmission, Price " +
-                "from Automobiles " +
-                "where _id = ?", new String[]{id});
-
+        Cursor cursor = database.rawQuery("select Automobiles._id, AutoModel, Photo, ProductYear, " +
+                "Seats, FuelType, Transmission, Price, Brands._id, Brand, Manufacturers._id, Manufacturer, " +
+                "BodyStyles._id, BodyStyle " +
+                "from Automobiles join Brands on _idBrand = Brands._id " +
+                "join Manufacturers on Brands._idManufacturer = Manufacturers._id " +
+                "join BodyStyles on _idBodyStyle = BodyStyles._id " +
+                "where Automobiles._id = ? " +
+                "order by Brand", new String[]{id});
         if(cursor.getCount() != 0) {
             cursor.moveToFirst();
-
-            Automobile automobile = new Automobile(cursor.getInt(0), cursor.getString(1), cursor.getString(3), cursor.getInt(4), cursor.getInt(5), cursor.getString(7), cursor.getString(8), cursor.getDouble(9));
-
-            String idBrand = cursor.getString(2);
-            String idBodyStyle = cursor.getString(6);
-
-            cursor = database.rawQuery("select Brands._id, Brand, Manufacturers._id, Manufacturer  " +
-                    "from Brands join Manufacturers on Brands._idManufacturer = Manufacturer._id " +
-                    "where Brands._id = ? ", new String[]{idBrand});
-            cursor.moveToFirst();
-            automobile.setBrand(new Brand(cursor.getInt(0), cursor.getString(1), new Manufacturer(cursor.getInt(2), cursor.getString(3))));
-
-
-            cursor = database.rawQuery("select _id, BodyStyle  " +
-                    "from BodyStyles " +
-                    "where _id = ? ", new String[]{idBodyStyle});
-
-            cursor.moveToFirst();
-            automobile.setBodyStyle(new BodyStyle(cursor.getInt(0), cursor.getString(1)));
-
+            Automobile automobile = new Automobile(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getInt(3), cursor.getInt(4), cursor.getString(5), cursor.getString(6), cursor.getDouble(7));
+            automobile.setBodyStyle(new BodyStyle(cursor.getInt(12), cursor.getString(13)));
+            automobile.setBrand(new Brand(cursor.getInt(8), cursor.getString(9)));
+            automobile.getBrand().setManufacturer(new Manufacturer(cursor.getInt(10), cursor.getString(11)));
             cursor.close();
             return automobile;
-        } else{
+        } else {
             cursor.close();
             return null;
         }
-
     }
 
     public void deleteAuto(String id){
         database.delete("Automobiles", "_id = ?", new String[]{id});
+    }
+
+    public void updateAuto(Automobile auto){
+        //auto.setPhoto("");
+
+        ContentValues cv = new ContentValues();
+        cv.put("AutoModel", auto.getName());
+        cv.put("_idBrand", auto.getBrand().getId());
+        cv.put("Photo", auto.getPhoto());
+        cv.put("ProductYear", auto.getProductYear());
+        cv.put("Seats", auto.getSeats());
+        cv.put("_idBodyStyle", auto.getBodyStyle().getId());
+        cv.put("FuelType", auto.getFuelType());
+        cv.put("Transmission", auto.getTransmission());
+        cv.put("Price", auto.getPrice());
+
+        database.update("Automobiles", cv, "_id = ?", new String[]{String.valueOf(auto.getId())});
     }
 
 

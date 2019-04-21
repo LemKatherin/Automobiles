@@ -7,10 +7,17 @@
     <string name="manufactures">Manufactures</string>
     <string name="sort">Sort by:</string>
     <string name="price">Price</string>
-    <string name="year">Year:</string>
-    <string name="seats">Seats:</string>
-    <string name="body_style">Body style:</string>
-    <string name="fuel_type">Fuel:</string>
-    <string name="transmission">Transmission:</string>
+    <string name="year_points">Year:</string>
+    <string name="seats_points">Seats:</string>
+    <string name="body_style_points">Body style:</string>
+    <string name="fuel_type_points">Fuel:</string>
+    <string name="transmission_points">Transmission:</string>
     <string name="price_points">Price:</string>
+    <string name="title_activity_new_auto">New automobile</string>
+    <string name="model">Model</string>
+    <string name="year">Year</string>
+    <string name="seats">Seats</string>
+    <string name="body_style">Body style</string>
+    <string name="fuel_type">Fuel type</string>
+    <string name="transmission">Transmission</string>
 </resources>

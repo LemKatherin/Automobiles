@@ -19,7 +19,7 @@ public abstract class DataMapper {
 
     public abstract CommonEntity findById(String id);
     public abstract void insert(CommonEntity entity);
-    public abstract void update(String criteria, CommonEntity entity);
+    public abstract void update(CommonEntity entity);
     public abstract void delete(String id);
 
     public ArrayList<String[]> toStringArrayList(ArrayList<CommonEntity> listEntities){

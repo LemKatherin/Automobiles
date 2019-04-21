@@ -1,0 +1,12 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.katherine.automobiles.NewAutoActivity">
+    <item
+        android:id="@+id/saveItem"
+        android:enabled="true"
+        android:icon="@android:drawable/ic_menu_save"
+        android:title="Item"
+        android:visible="true"
+        app:showAsAction="always" />
+</menu>
