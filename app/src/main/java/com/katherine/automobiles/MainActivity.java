@@ -37,6 +37,9 @@ public class MainActivity extends AppCompatActivity implements ActivityView {
     private RecyclerView autoesRecyclerView;
 
     private MainActivityPresenter presenter;
+    private ArrayList<String[]> allAutoes = new ArrayList<>();
+    private ArrayList<String[]> allBrands = new ArrayList<>();
+    private ArrayList<String[]> allManufactures = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +82,16 @@ public class MainActivity extends AppCompatActivity implements ActivityView {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 changeViewVisibility(brandsRecyclerView);
+                if(!isChecked){
+                    ((CardAdapter) brandsRecyclerView.getAdapter()).setContents(allBrands);
+                    ((CardsTextCheckAdapter) brandsRecyclerView.getAdapter()).getChecked().clear();
+
+                    CardsTextCheckAdapter cardsTextCheckAdapterMan = (CardsTextCheckAdapter) manufacturersRecyclerView.getAdapter();
+                    ((CardAdapter) autoesRecyclerView.getAdapter()).setContents(presenter.filter(MainActivityPresenter.FILTERS.MANUFACTURER, cardsTextCheckAdapterMan.getChecked()));
+
+                    autoesRecyclerView.getAdapter().notifyDataSetChanged();
+                    brandsRecyclerView.getAdapter().notifyDataSetChanged();
+                }
             }
         });
 
@@ -86,6 +99,18 @@ public class MainActivity extends AppCompatActivity implements ActivityView {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 changeViewVisibility(manufacturersRecyclerView);
+                if(!isChecked){
+                    ((CardAdapter) manufacturersRecyclerView.getAdapter()).setContents(allManufactures);
+                    ((CardsTextCheckAdapter) manufacturersRecyclerView.getAdapter()).getChecked().clear();
+                    ((CardsTextCheckAdapter) brandsRecyclerView.getAdapter()).getChecked().clear();
+
+                    ((CardAdapter) brandsRecyclerView.getAdapter()).setContents(allBrands);
+                    ((CardAdapter) autoesRecyclerView.getAdapter()).setContents(allAutoes);
+
+                    autoesRecyclerView.getAdapter().notifyDataSetChanged();
+                    manufacturersRecyclerView.getAdapter().notifyDataSetChanged();
+                    brandsRecyclerView.getAdapter().notifyDataSetChanged();
+                }
             }
         });
 
@@ -95,7 +120,7 @@ public class MainActivity extends AppCompatActivity implements ActivityView {
                 if(isChecked)
                     ((CardAdapter)autoesRecyclerView.getAdapter()).setContents(presenter.getCardContentSorted(MainActivityPresenter.MAPPERS.AUTOMOBILE, MainActivityPresenter.FILTERS.PRICE));
                 else
-                    ((CardAdapter)autoesRecyclerView.getAdapter()).setContents(presenter.getCardContent(MainActivityPresenter.MAPPERS.AUTOMOBILE));
+                    ((CardAdapter)autoesRecyclerView.getAdapter()).setContents(allAutoes);
                 autoesRecyclerView.getAdapter().notifyDataSetChanged();
             }
         });
@@ -108,22 +133,26 @@ public class MainActivity extends AppCompatActivity implements ActivityView {
             }
         });
 
+        allBrands = presenter.getCardContent(MainActivityPresenter.MAPPERS.BRAND);
 
-        CardsTextCheckAdapter cardsTextCheckAdapterBrands = new CardsTextCheckAdapter(presenter.getCardContent(MainActivityPresenter.MAPPERS.BRAND));
+        CardsTextCheckAdapter cardsTextCheckAdapterBrands = new CardsTextCheckAdapter(allBrands);
         brandsRecyclerView.setAdapter(cardsTextCheckAdapterBrands);
         GridLayoutManager gridLayoutManagerBrands = new GridLayoutManager(this, 2);
         brandsRecyclerView.setLayoutManager(gridLayoutManagerBrands);
         cardsTextCheckAdapterBrands.setParent(brandsRecyclerView);
 
 
+        allManufactures = presenter.getCardContent(MainActivityPresenter.MAPPERS.MANUFACTURER);
 
-        CardsTextCheckAdapter cardsTextCheckAdapterMan = new CardsTextCheckAdapter(presenter.getCardContent(MainActivityPresenter.MAPPERS.MANUFACTURER));
+        CardsTextCheckAdapter cardsTextCheckAdapterMan = new CardsTextCheckAdapter(allManufactures);
         manufacturersRecyclerView.setAdapter(cardsTextCheckAdapterMan);
         GridLayoutManager gridLayoutManagerMan = new GridLayoutManager(this, 2);
         manufacturersRecyclerView.setLayoutManager(gridLayoutManagerMan);
         cardsTextCheckAdapterMan.setParent(manufacturersRecyclerView);
 
-        CardAutoAdapter cardAutoAdapter = new CardAutoAdapter(presenter.getCardContent(MainActivityPresenter.MAPPERS.AUTOMOBILE));
+        allAutoes = presenter.getCardContent(MainActivityPresenter.MAPPERS.AUTOMOBILE);
+
+        CardAutoAdapter cardAutoAdapter = new CardAutoAdapter(allAutoes);
         autoesRecyclerView.setAdapter(cardAutoAdapter);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -251,7 +280,8 @@ public class MainActivity extends AppCompatActivity implements ActivityView {
     @Override
     public void onResume(){
         try {
-            ((CardAdapter) autoesRecyclerView.getAdapter()).setContents(presenter.getCardContent(MainActivityPresenter.MAPPERS.AUTOMOBILE));
+            allAutoes = presenter.getCardContent(MainActivityPresenter.MAPPERS.AUTOMOBILE);
+            ((CardAdapter) autoesRecyclerView.getAdapter()).setContents(allAutoes);
             autoesRecyclerView.getAdapter().notifyDataSetChanged();
         } catch (Exception ex){}
         super.onResume();

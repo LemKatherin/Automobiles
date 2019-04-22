@@ -49,6 +49,8 @@ public class CardsTextCheckAdapter extends CardAdapter{
         checkBox = (CheckBox) cardView.findViewById(R.id.checkBox);
         checkBox.setText(contents.get(position)[1]);
 
+
+
        // MainActivity activity = (MainActivity)cardView.getContext();
        // activity.setChecks(contents.get(position)[0]);
 
@@ -64,36 +66,15 @@ public class CardsTextCheckAdapter extends CardAdapter{
             }
         });
 
-       /* CheckBox checkBox = ((CardsTextCheckAdapter)brandsRecyclerView.getAdapter()).getCheckBox();
-        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked)
-                    ((CardAdapter)autoesRecyclerView.getAdapter()).setContents(presenter.getCardContentSorted(MainActivityPresenter.MAPPERS.AUTOMOBILE, MainActivityPresenter.FILTERS.BRAND));
-                //else
-                //  ((CardAdapter)autoesRecyclerView.getAdapter()).setContents(presenter.getCardContent(MainActivityPresenter.MAPPERS.AUTOMOBILE));
-                autoesRecyclerView.getAdapter().notifyDataSetChanged();
-            }
-        });*/
 
-
-
-
-      /*  for(Category cat: checkedCategories){
-            if(cat.getId() == Integer.valueOf(contents.get(position)[0]) && !checkBox.isChecked())
+        for(String check: checked){
+            if(check.equals(contents.get(position)[0]) && !checkBox.isChecked())
                 checkBox.setChecked(true);
         }
 
+        if(checked.isEmpty() && checkBox.isChecked()) checkBox.setChecked(false);
 
-        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked)
-                    checkedCategories.add(new Category(Integer.valueOf(contents.get(position)[0]), contents.get(position)[1]));
-                else if( checkedCategories != null && checkedCategories.contains(buttonView.getText().toString()))
-                    checkedCategories.remove(buttonView.getText().toString());
-            }
-        });*/
+
 
     }
     @Override
