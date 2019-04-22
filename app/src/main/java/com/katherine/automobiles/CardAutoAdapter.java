@@ -1,5 +1,9 @@
 package com.katherine.automobiles;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.support.v7.widget.CardView;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -8,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.File;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 public class CardAutoAdapter extends CardAdapter {
@@ -73,6 +79,15 @@ public class CardAutoAdapter extends CardAdapter {
         fuelValueTextView.setText(contents.get(position)[7]);
         transmissionValueTextView.setText(contents.get(position)[8]);
         priceValueTextView.setText(contents.get(position)[9]);
+        try {
+            Uri uri;
+            File f = new File(contents.get(position)[3]);
+            uri = Uri.fromFile(f);
+            photoImageView.setImageURI(null);
+            photoImageView.setImageURI(uri);
+
+        }catch (Exception ex){}
+
 
     }
     @Override

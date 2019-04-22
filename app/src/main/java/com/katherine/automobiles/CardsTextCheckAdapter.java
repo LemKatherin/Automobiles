@@ -69,7 +69,7 @@ public class CardsTextCheckAdapter extends CardAdapter{
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked)
-                    ((CardAdapter)autoesRecyclerView.getAdapter()).setContents(presenter.getCardContentFilter(MainActivityPresenter.MAPPERS.AUTOMOBILE, MainActivityPresenter.FILTERS.BRAND));
+                    ((CardAdapter)autoesRecyclerView.getAdapter()).setContents(presenter.getCardContentSorted(MainActivityPresenter.MAPPERS.AUTOMOBILE, MainActivityPresenter.FILTERS.BRAND));
                 //else
                 //  ((CardAdapter)autoesRecyclerView.getAdapter()).setContents(presenter.getCardContent(MainActivityPresenter.MAPPERS.AUTOMOBILE));
                 autoesRecyclerView.getAdapter().notifyDataSetChanged();

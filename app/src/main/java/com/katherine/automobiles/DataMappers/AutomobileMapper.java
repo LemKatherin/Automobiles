@@ -13,7 +13,7 @@ public class AutomobileMapper extends DataMapper {
     public AutomobileMapper() { }
 
     @Override
-    public ArrayList find(String criteria, String search){
+    public ArrayList find(CRITERIA criteria, String search){
         ArrayList<CommonEntity> automobiles = new ArrayList<>();
 
         switch (criteria){
@@ -34,23 +34,6 @@ public class AutomobileMapper extends DataMapper {
                 }
                 return automobiles;
 
-           /* case BRAND:
-                try {
-                    dbadapter = dbadapter.open();
-                    automobiles = dbadapter.getAutoesOfBrand(search);
-                } catch (SQLiteException ex){
-
-                }
-                return automobiles;*/
-
-            case MANUFACTURER:
-                try {
-                    dbadapter = dbadapter.open();
-                    automobiles = dbadapter.getAutoesOfManufacturer(search);
-                } catch (SQLiteException ex){
-
-                }
-                return automobiles;
             case PRICE:
                 try {
                     dbadapter = dbadapter.open();
@@ -66,7 +49,7 @@ public class AutomobileMapper extends DataMapper {
     }
 
     @Override
-    public ArrayList<CommonEntity> filter(String criteria, String query) {
+    public ArrayList<CommonEntity> filter(CRITERIA criteria, String query) {
         ArrayList<CommonEntity> automobiles = new ArrayList<>();
 
         switch (criteria){

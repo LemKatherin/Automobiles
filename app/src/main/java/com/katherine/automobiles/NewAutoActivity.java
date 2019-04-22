@@ -1,7 +1,14 @@
 package com.katherine.automobiles;
 
 import android.content.Entity;
+import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -25,11 +32,15 @@ import com.katherine.automobiles.Entities.Brand;
 import com.katherine.automobiles.Entities.CommonEntity;
 import com.katherine.automobiles.Presenters.NewEntityActivityPresenter;
 import com.katherine.automobiles.Views.NewActivityView;
+import com.squareup.picasso.Picasso;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 public class NewAutoActivity extends NewActivityView {
-
+    static final int GALLERY_REQUEST = 1;
     public static final String AUTO_ID = "autoID";
 
     private Spinner brandSpinner;
@@ -41,6 +52,8 @@ public class NewAutoActivity extends NewActivityView {
     private TextView fuelValueTextView;
     private TextView transmissionValueTextView;
     private TextView priceValueTextView;
+
+    private String imagePath;
 
     private NewEntityActivityPresenter presenter;
 
@@ -116,6 +129,17 @@ public class NewAutoActivity extends NewActivityView {
         transmissionValueTextView = (TextView) findViewById(R.id.transmissionValueTextView);
         priceValueTextView = (TextView) findViewById(R.id.priceValueTextView);
 
+        File extStore = Environment.getExternalStorageDirectory();
+
+        photoImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+                photoPickerIntent.setType("image/*");
+                startActivityForResult(photoPickerIntent, GALLERY_REQUEST);
+            }
+        });
+
         presenter.setDataModel(NewEntityActivityPresenter.MAPPERS.BRAND);
         final ArrayList<CommonEntity> brandEntities = presenter.setSpinnerList();
 
@@ -165,6 +189,17 @@ public class NewAutoActivity extends NewActivityView {
         return true;
     }
 
+    private String getPath(Uri uri) {
+        String res = null;
+        String[] proj = {MediaStore.Images.Media.DATA};
+        Cursor cursor = getContentResolver().query(uri, proj, null, null, null);
+        if (cursor.moveToFirst()) {
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            res = cursor.getString(column_index);
+        }
+        cursor.close();
+        return res;
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -195,10 +230,16 @@ public class NewAutoActivity extends NewActivityView {
                         ((Automobile)newEntity).setPrice(Double.valueOf(priceValueTextView.getText().toString()));
                     }catch (Exception ex) {}
 
+                    try {
+                        ((Automobile)newEntity).setPhoto(imagePath);
+                    }catch (Exception ex) {}
+
                     if(newEntity.getId() == 0)
                         presenter.save();
                     else
                         presenter.update();
+
+                    onBackPressed();
                 }
                 return true;
             default:
@@ -207,9 +248,39 @@ public class NewAutoActivity extends NewActivityView {
 
     }
 
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
+        super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
+
+        switch (requestCode) {
+            case GALLERY_REQUEST:
+                if (resultCode == RESULT_OK && imageReturnedIntent != null) {
+                    try {
+                        Uri photoImageUri = imageReturnedIntent.getData();
+                        imagePath = getPath(photoImageUri);
+                        if (imagePath != null) {
+                            File f = new File(imagePath);
+                            photoImageUri = Uri.fromFile(f);
+                        }
+
+                        photoImageView.setImageURI(photoImageUri);
+                    }catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+        }
+    }
+
     @Override
     public void showToast(String text) {
         Toast.makeText(getApplicationContext(), text,
                 Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onDestroy(){
+        presenter.detachView();
+        super.onDestroy();
     }
 }

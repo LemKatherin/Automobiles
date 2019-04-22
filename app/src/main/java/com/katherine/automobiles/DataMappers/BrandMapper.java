@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class BrandMapper extends DataMapper {
     @Override
-    public ArrayList<CommonEntity> find(String criteria, String search) {
+    public ArrayList<CommonEntity> find(CRITERIA criteria, String search) {
 
         ArrayList<CommonEntity> brands = new ArrayList<>();
 
@@ -28,7 +28,7 @@ public class BrandMapper extends DataMapper {
     }
 
     @Override
-    public ArrayList<CommonEntity> filter(String criteria, String query) {
+    public ArrayList<CommonEntity> filter(CRITERIA criteria, String query) {
         ArrayList<CommonEntity> brands = new ArrayList<>();
 
         switch (criteria){

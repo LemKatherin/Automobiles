@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class ManufacturerMapper extends DataMapper {
 
     @Override
-    public ArrayList<CommonEntity> find(String criteria, String search) {
+    public ArrayList<CommonEntity> find(CRITERIA criteria, String search) {
         ArrayList<CommonEntity> manufacturers = new ArrayList<>();
 
         switch (criteria) {

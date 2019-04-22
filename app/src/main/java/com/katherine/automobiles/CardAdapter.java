@@ -22,8 +22,6 @@ public abstract class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewH
     }
 
 
-
-
     public static class ViewHolder extends RecyclerView.ViewHolder {
         protected CardView cardView;
         public ViewHolder(CardView v) {

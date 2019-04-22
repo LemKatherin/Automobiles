@@ -3,7 +3,6 @@ package com.katherine.automobiles;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,13 +18,11 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.katherine.automobiles.DataMappers.AutomobileMapper;
-import com.katherine.automobiles.DataMappers.BrandMapper;
 import com.katherine.automobiles.Database.DatabaseAdapter;
 import com.katherine.automobiles.Presenters.MainActivityPresenter;
 import com.katherine.automobiles.Views.ActivityView;
 
-import java.net.ContentHandler;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements ActivityView {
 
@@ -54,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements ActivityView {
 
         presenter = new MainActivityPresenter(this);
 
+
         initActivity();
 
 
@@ -73,21 +71,21 @@ public class MainActivity extends AppCompatActivity implements ActivityView {
         filterAndSortTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.changeViewVisibility(filterAndSortLayout);
+                changeViewVisibility(filterAndSortLayout);
             }
         });
 
         brandsCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                presenter.changeViewVisibility(brandsRecyclerView);
+                changeViewVisibility(brandsRecyclerView);
             }
         });
 
         manufacturersCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                presenter.changeViewVisibility(manufacturersRecyclerView);
+                changeViewVisibility(manufacturersRecyclerView);
             }
         });
 
@@ -95,7 +93,7 @@ public class MainActivity extends AppCompatActivity implements ActivityView {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked)
-                    ((CardAdapter)autoesRecyclerView.getAdapter()).setContents(presenter.getCardContentFilter(MainActivityPresenter.MAPPERS.AUTOMOBILE, MainActivityPresenter.FILTERS.PRICE));
+                    ((CardAdapter)autoesRecyclerView.getAdapter()).setContents(presenter.getCardContentSorted(MainActivityPresenter.MAPPERS.AUTOMOBILE, MainActivityPresenter.FILTERS.PRICE));
                 else
                     ((CardAdapter)autoesRecyclerView.getAdapter()).setContents(presenter.getCardContent(MainActivityPresenter.MAPPERS.AUTOMOBILE));
                 autoesRecyclerView.getAdapter().notifyDataSetChanged();
@@ -134,31 +132,19 @@ public class MainActivity extends AppCompatActivity implements ActivityView {
 
     }
 
-    public MainActivityPresenter getPresenter() {
-        return presenter;
-    }
-
-    public RecyclerView getAutoesRecyclerView() {
-        return autoesRecyclerView;
-    }
-
-    public RecyclerView getBrandsRecyclerView() {
-        return brandsRecyclerView;
-    }
-
-    public RecyclerView getManufacturersRecyclerView() {
-        return manufacturersRecyclerView;
-    }
-
     public void setChecks(RecyclerView recyclerView){
 
         if(recyclerView == brandsRecyclerView) {
             CardsTextCheckAdapter cardsTextCheckAdapterBrand = (CardsTextCheckAdapter) brandsRecyclerView.getAdapter();
+
             ((CardAdapter) autoesRecyclerView.getAdapter()).setContents(presenter.filter(MainActivityPresenter.FILTERS.BRAND, cardsTextCheckAdapterBrand.getChecked()));
+
             autoesRecyclerView.getAdapter().notifyDataSetChanged();
             if(((CardsTextCheckAdapter) brandsRecyclerView.getAdapter()).getChecked().isEmpty()){
                 CardsTextCheckAdapter cardsTextCheckAdapterMan = (CardsTextCheckAdapter) manufacturersRecyclerView.getAdapter();
+
                 ((CardAdapter) autoesRecyclerView.getAdapter()).setContents(presenter.filter(MainActivityPresenter.FILTERS.MANUFACTURER, cardsTextCheckAdapterMan.getChecked()));
+
                 autoesRecyclerView.getAdapter().notifyDataSetChanged();
             }
         }
@@ -166,61 +152,35 @@ public class MainActivity extends AppCompatActivity implements ActivityView {
 
         if(recyclerView == manufacturersRecyclerView) {
             CardsTextCheckAdapter cardsTextCheckAdapterMan = (CardsTextCheckAdapter) manufacturersRecyclerView.getAdapter();
+
             ((CardAdapter) autoesRecyclerView.getAdapter()).setContents(presenter.filter(MainActivityPresenter.FILTERS.MANUFACTURER, cardsTextCheckAdapterMan.getChecked()));
+
             ((CardsTextCheckAdapter) brandsRecyclerView.getAdapter()).getChecked().clear();
-            presenter.setDataModel(new BrandMapper());
+
+            presenter.setDataModel(MainActivityPresenter.MAPPERS.BRAND);
+
             ((CardAdapter) brandsRecyclerView.getAdapter()).setContents(presenter.filter(MainActivityPresenter.FILTERS.MANUFACTURER, cardsTextCheckAdapterMan.getChecked()));
+
             brandsRecyclerView.getAdapter().notifyDataSetChanged();
             autoesRecyclerView.getAdapter().notifyDataSetChanged();
-            presenter.setDataModel(new AutomobileMapper());
+
+            presenter.setDataModel(MainActivityPresenter.MAPPERS.AUTOMOBILE);
         }
 
-      /*  try {
-            final CardsTextCheckAdapter cardsTextCheckAdapterBrand = (CardsTextCheckAdapter) brandsRecyclerView.getAdapter();
-            cardsTextCheckAdapterBrand.getCheckBox().setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (isChecked)
-                        cardsTextCheckAdapterBrand.getChecked().add(id);
-                    else
-                        cardsTextCheckAdapterBrand.getChecked().remove(id);
-                    ((CardAdapter) autoesRecyclerView.getAdapter()).setContents(presenter.filter(MainActivityPresenter.FILTERS.BRAND, cardsTextCheckAdapterBrand.getChecked()));
-                    autoesRecyclerView.getAdapter().notifyDataSetChanged();
-                }
-            });
-        } catch (Exception ex){}
-
-        try {
-            final CardsTextCheckAdapter cardsTextCheckAdapterMan = (CardsTextCheckAdapter) manufacturersRecyclerView.getAdapter();
-            cardsTextCheckAdapterMan.getCheckBox().setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (isChecked)
-                        cardsTextCheckAdapterMan.getChecked().add(id);
-                    else
-                        cardsTextCheckAdapterMan.getChecked().remove(id);
-                    ((CardAdapter) autoesRecyclerView.getAdapter()).setContents(presenter.filter(MainActivityPresenter.FILTERS.MANUFACTURER, cardsTextCheckAdapterMan.getChecked()));
-                    presenter.setDataModel(new BrandMapper());
-                    ((CardAdapter) brandsRecyclerView.getAdapter()).setContents(presenter.filter(MainActivityPresenter.FILTERS.MANUFACTURER, cardsTextCheckAdapterMan.getChecked()));
-                    brandsRecyclerView.getAdapter().notifyDataSetChanged();
-                    autoesRecyclerView.getAdapter().notifyDataSetChanged();
-                    presenter.setDataModel(new AutomobileMapper());
-                }
-            });
-        } catch (Exception ex){} */
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
+
         getMenuInflater().inflate(R.menu.menu_main, menu);
 
         MenuItem item =  menu.findItem(R.id.SearchItem);
         SearchView searchView = (SearchView) item.getActionView();
+        searchView.setQueryHint("Model");
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public boolean onQueryTextSubmit(String query) {
+            public boolean onQueryTextSubmit(String query){
                 ((CardAdapter)autoesRecyclerView.getAdapter()).setContents(presenter.searchQuery(MainActivityPresenter.FILTERS.AUTOMOBILE, query));
                 autoesRecyclerView.getAdapter().notifyDataSetChanged();
                 return false;
@@ -262,25 +222,44 @@ public class MainActivity extends AppCompatActivity implements ActivityView {
 
         switch (item.getItemId()){
             case 1:
-
                 position = ((CardAdapter)autoesRecyclerView.getAdapter()).getPosition();
 
                 presenter.removeItem(((CardAdapter)autoesRecyclerView.getAdapter()).getContents().get(position)[0]);
-                ((CardAdapter)autoesRecyclerView.getAdapter()).getContents().remove(position);
 
-                // уведомляем, что данные изменились
+                ((CardAdapter)autoesRecyclerView.getAdapter()).getContents().remove(position);
                 autoesRecyclerView.getAdapter().notifyDataSetChanged();
                 return true;
-            default:
+            case 2:
                 position = ((CardAdapter)autoesRecyclerView.getAdapter()).getPosition();
-                //   Recipe recipe = (Recipe) recipeMapper.find(DataMapper.ID, String.valueOf(((Recipe)entities.get(position)).getId()));
                 Intent intent = new Intent(this,NewAutoActivity.class);
                 intent.putExtra(NewAutoActivity.AUTO_ID, (((CardAdapter)autoesRecyclerView.getAdapter()).getContents().get(position)[0]));
                 startActivity(intent);
-                //recipeMapper.update();*/
                 return true;
         }
 
-        // return super.onContextItemSelected(item);
+         return super.onContextItemSelected(item);
+    }
+
+    @Override
+    public void changeViewVisibility(View view){
+        if(view.getVisibility() == View.GONE)
+            view.setVisibility(View.VISIBLE);
+        else
+            view.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onResume(){
+        try {
+            ((CardAdapter) autoesRecyclerView.getAdapter()).setContents(presenter.getCardContent(MainActivityPresenter.MAPPERS.AUTOMOBILE));
+            autoesRecyclerView.getAdapter().notifyDataSetChanged();
+        } catch (Exception ex){}
+        super.onResume();
+    }
+
+    @Override
+    public void onDestroy(){
+        presenter.detachView();
+        super.onDestroy();
     }
 }

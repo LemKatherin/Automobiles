@@ -6,23 +6,26 @@ import com.katherine.automobiles.Entities.CommonEntity;
 import java.util.ArrayList;
 
 public abstract class DataMapper {
-    public final static String ALL = "ALL";
-    public final static String NAME = "NAME";
-    public final static String ID = "ID";
-    public final static String MANUFACTURER = "MANUFACTURER";
-    public final static String BRAND = "BRAND";
-    public final static String PRICE = "PRICE";
+
+    public enum CRITERIA{
+        ALL,
+        NAME,
+        MANUFACTURER,
+        BRAND,
+        PRICE
+    }
+
 
     DatabaseAdapter dbadapter = DatabaseAdapter.getInstance();
 
-    public abstract ArrayList<CommonEntity> find(String criteria, String search);
+    public abstract ArrayList<CommonEntity> find(CRITERIA criteria, String search);
 
     public abstract CommonEntity findById(String id);
     public abstract void insert(CommonEntity entity);
     public abstract void update(CommonEntity entity);
     public abstract void delete(String id);
 
-    public  ArrayList<CommonEntity> filter(String criteria, String query){return  null;}
+    public  ArrayList<CommonEntity> filter(CRITERIA criteria, String query){return  null;}
 
     public ArrayList<String[]> toStringArrayList(ArrayList<CommonEntity> listEntities){
         ArrayList<String[]> stringListEntities = new ArrayList<>();

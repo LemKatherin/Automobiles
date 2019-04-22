@@ -1,12 +1,10 @@
 package com.katherine.automobiles.Presenters;
 
-import android.view.View;
-
 import com.katherine.automobiles.DataMappers.AutomobileMapper;
+import com.katherine.automobiles.DataMappers.BodyStyleMapper;
 import com.katherine.automobiles.DataMappers.BrandMapper;
 import com.katherine.automobiles.DataMappers.DataMapper;
 import com.katherine.automobiles.DataMappers.ManufacturerMapper;
-import com.katherine.automobiles.Database.DatabaseAdapter;
 import com.katherine.automobiles.Views.ActivityView;
 
 import java.util.ArrayList;
@@ -27,36 +25,32 @@ public class MainActivityPresenter {
         PRICE,
         BRAND,
         MANUFACTURER,
-        SEARCH,
         AUTOMOBILE,
-        BRMAN
     }
 
-   /* public MainActivityPresenter(DataMapper dataModel) {
-        this.dataModel = dataModel;
-    }*/
 
     public MainActivityPresenter(ActivityView activityView) {
         this.activityView = activityView;
     }
 
-    public void setDataModel(DataMapper dataModel) {
-        this.dataModel = dataModel;
-    }
-
-    public void attachView(ActivityView activityView) {
-        this.activityView = activityView;
+    public void setDataModel(MAPPERS mapper) {
+        switch (mapper){
+            case AUTOMOBILE:
+                dataModel = new AutomobileMapper();
+                break;
+            case BRAND:
+                dataModel = new BrandMapper();
+                break;
+            case MANUFACTURER:
+                dataModel = new ManufacturerMapper();
+            case BODYSTYLE:
+                dataModel = new BodyStyleMapper();
+                break;
+        }
     }
 
     public void detachView() {
         activityView = null;
-    }
-
-    public void changeViewVisibility(View view){
-        if(view.getVisibility() == View.GONE)
-            view.setVisibility(View.VISIBLE);
-        else
-            view.setVisibility(View.GONE);
     }
 
     public ArrayList<String[]> getCardContent(MAPPERS mapper){
@@ -64,39 +58,28 @@ public class MainActivityPresenter {
         switch (mapper){
             case BRAND:
                 dataModel = new BrandMapper();
-                cardContent = dataModel.toStringArrayList(dataModel.find(DataMapper.ALL, ""));
+                cardContent = dataModel.toStringArrayList(dataModel.find(DataMapper.CRITERIA.ALL, ""));
                 break;
             case MANUFACTURER:
                 dataModel = new ManufacturerMapper();
-                cardContent = dataModel.toStringArrayList(dataModel.find(DataMapper.ALL, ""));
+                cardContent = dataModel.toStringArrayList(dataModel.find(DataMapper.CRITERIA.ALL, ""));
                 break;
             case AUTOMOBILE:
                 dataModel = new AutomobileMapper();
-                cardContent = dataModel.toStringArrayList(dataModel.find(DataMapper.ALL, ""));
+                cardContent = dataModel.toStringArrayList(dataModel.find(DataMapper.CRITERIA.ALL, ""));
                 break;
         }
         return cardContent;
     }
 
-    public ArrayList<String[]> getCardContentFilter(MAPPERS mapper, FILTERS filter){
+    public ArrayList<String[]> getCardContentSorted(MAPPERS mapper, FILTERS filter){
         ArrayList<String[]> cardContent = new ArrayList<>();
         switch (mapper){
-            case BRAND:
-                dataModel = new BrandMapper();
-                cardContent = dataModel.toStringArrayList(dataModel.find(DataMapper.ALL, ""));
-                break;
-            case MANUFACTURER:
-                dataModel = new ManufacturerMapper();
-                cardContent = dataModel.toStringArrayList(dataModel.find(DataMapper.ALL, ""));
-                break;
             case AUTOMOBILE:
                 dataModel = new AutomobileMapper();
                 switch (filter){
                     case PRICE:
-                        cardContent = dataModel.toStringArrayList(dataModel.find(DataMapper.PRICE, ""));
-                        break;
-                    case BRAND:
-                        cardContent = dataModel.toStringArrayList(dataModel.find(DataMapper.BRAND, ""));
+                        cardContent = dataModel.toStringArrayList(dataModel.find(DataMapper.CRITERIA.PRICE, ""));
                         break;
                 }
                 break;
@@ -105,16 +88,12 @@ public class MainActivityPresenter {
     }
 
 
-    public ArrayList<String[]> searchQuery(FILTERS mapper,String query){
+    public ArrayList<String[]> searchQuery(FILTERS filter,String query){
         ArrayList<String[]> cardContent = new ArrayList<>();
         if(!query.isEmpty()) {
-            //cardContent = getCardContentFilter(MAPPERS.AUTOMOBILE, FILTERS.SEARCH);
-            switch (mapper) {
+            switch (filter) {
                 case AUTOMOBILE:
-                    cardContent = dataModel.toStringArrayList(dataModel.find(DataMapper.NAME, query));
-                    break;
-                case BRAND:
-                    cardContent = dataModel.toStringArrayList(dataModel.find(DataMapper.BRAND, query));
+                    cardContent = dataModel.toStringArrayList(dataModel.find(DataMapper.CRITERIA.NAME, query));
                     break;
             }
             if (cardContent.isEmpty()) {
@@ -126,25 +105,29 @@ public class MainActivityPresenter {
         return cardContent;
     }
 
-    public ArrayList<String[]> filter(FILTERS mapper, ArrayList<String> query){
+    public ArrayList<String[]> filter(FILTERS filter, ArrayList<String> query){
         ArrayList<String[]> cardContent = new ArrayList<>();
+
         if(!query.isEmpty()) {
+
             String strings = "";
             for(String string: query){
                 if(!strings.isEmpty()) strings += ",";
                 strings = strings + "'" + string + "'";
             }
-            switch (mapper) {
+
+            switch (filter) {
                 case BRAND:
-                    cardContent = dataModel.toStringArrayList(dataModel.filter(DataMapper.BRAND, strings));
+                    cardContent = dataModel.toStringArrayList(dataModel.filter(DataMapper.CRITERIA.BRAND, strings));
                     break;
                 case MANUFACTURER:
-                    cardContent = dataModel.toStringArrayList(dataModel.filter(DataMapper.MANUFACTURER, strings));
+                    cardContent = dataModel.toStringArrayList(dataModel.filter(DataMapper.CRITERIA.MANUFACTURER, strings));
                     break;
             }
             if (cardContent.isEmpty()) {
                 activityView.showToast("Ничего не найдено!");
             }
+
         } else {
             if(dataModel.getClass() == BrandMapper.class)
                 cardContent = getCardContent(MAPPERS.BRAND);

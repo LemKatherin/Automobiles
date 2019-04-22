@@ -27,10 +27,6 @@ public class NewEntityActivityPresenter {
         this.newActivityView = newActivityView;
     }
 
-    public void attachView(NewActivityView newActivityView) {
-        this.newActivityView = newActivityView;
-    }
-
     public void setDataModel(MAPPERS mapper) {
         switch (mapper){
             case AUTOMOBILE:
@@ -65,14 +61,9 @@ public class NewEntityActivityPresenter {
 
     }
 
-    public ArrayList<CommonEntity> setSpinnerList(){
+    public ArrayList<CommonEntity> setSpinnerList(){ return dataModel.find(DataMapper.CRITERIA.ALL,""); }
 
-        return dataModel.find(DataMapper.ALL,"");
-    }
-
-    public void save(){
-        dataModel.insert(newActivityView.getNewEntity());
-    }
+    public void save(){ dataModel.insert(newActivityView.getNewEntity()); }
 
     public void update(){
         dataModel.update(newActivityView.getNewEntity());

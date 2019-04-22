@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class BodyStyleMapper extends DataMapper {
     @Override
-    public ArrayList<CommonEntity> find(String criteria, String search) {
+    public ArrayList<CommonEntity> find(CRITERIA criteria, String search) {
         ArrayList<CommonEntity> bodyStyles = new ArrayList<>();
 
         switch (criteria) {

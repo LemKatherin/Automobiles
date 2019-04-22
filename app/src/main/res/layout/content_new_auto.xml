@@ -20,21 +20,20 @@
 
             <Spinner
                 android:id="@+id/brandSpinner"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1" />
 
             <EditText
                 android:id="@+id/modelTextView"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:hint="@string/model"
                 android:paddingLeft="5dp"
                 android:paddingTop="5dp"
                 android:paddingBottom="5dp"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+                android:textSize="18sp" />
         </LinearLayout>
 
         <ImageView
@@ -54,30 +53,29 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_gravity="center"
-                android:layout_weight="1"
                 android:paddingLeft="2dp"
                 android:paddingTop="2dp"
                 android:paddingBottom="2dp"
-                android:src="@android:drawable/ic_menu_my_calendar" />
+                android:src="@drawable/calendar" />
 
             <EditText
                 android:id="@+id/yearValueTextView"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:hint="@string/year"
                 android:inputType="number"
+                android:maxLength="4"
                 android:paddingLeft="5dp"
                 android:paddingTop="5dp"
                 android:paddingBottom="5dp"
-                android:textSize="18sp" />
+                android:textSize="14sp" />
 
             <ImageView
                 android:id="@+id/seatsImageView"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_gravity="center_vertical|end"
-                android:layout_weight="1"
                 android:paddingLeft="2dp"
                 android:paddingTop="2dp"
                 android:paddingBottom="2dp"
@@ -85,38 +83,17 @@
 
             <EditText
                 android:id="@+id/seatsValueTextView"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:hint="@string/seats"
                 android:inputType="number"
+                android:maxLength="3"
                 android:paddingLeft="5dp"
                 android:paddingTop="5dp"
                 android:paddingBottom="5dp"
-                android:textSize="18sp" />
+                android:textSize="14sp" />
 
-            <ImageView
-                android:id="@+id/priceImageView"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_gravity="center_vertical|end"
-                android:layout_weight="1"
-                android:paddingLeft="2dp"
-                android:paddingTop="2dp"
-                android:paddingBottom="2dp"
-                android:src="@drawable/price" />
-
-            <EditText
-                android:id="@+id/priceValueTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:hint="@string/price"
-                android:inputType="numberDecimal"
-                android:paddingLeft="5dp"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
-                android:textSize="18sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -129,7 +106,6 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_gravity="center"
-                android:layout_weight="0.5"
                 android:paddingLeft="2dp"
                 android:paddingTop="2dp"
                 android:paddingBottom="2dp"
@@ -137,9 +113,31 @@
 
             <Spinner
                 android:id="@+id/bodyStyleSpinner"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="6" />
+                android:layout_weight="1" />
+
+            <ImageView
+                android:id="@+id/priceImageView"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_vertical|end"
+                android:paddingLeft="2dp"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp"
+                android:src="@drawable/price" />
+
+            <EditText
+                android:id="@+id/priceValueTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="@string/price"
+                android:inputType="numberDecimal"
+                android:paddingLeft="5dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:textSize="14sp" />
 
         </LinearLayout>
 
@@ -153,7 +151,6 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_gravity="center_vertical|end"
-                android:layout_weight="0.5"
                 android:paddingLeft="2dp"
                 android:paddingTop="2dp"
                 android:paddingBottom="2dp"
@@ -161,14 +158,14 @@
 
             <EditText
                 android:id="@+id/fuelValueTextView"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="7"
+                android:layout_weight="1"
                 android:hint="@string/fuel_type"
                 android:paddingLeft="5dp"
                 android:paddingTop="5dp"
                 android:paddingBottom="5dp"
-                android:textSize="18sp" />
+                android:textSize="14sp" />
 
         </LinearLayout>
 
@@ -182,7 +179,6 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_gravity="center"
-                android:layout_weight="0.5"
                 android:paddingLeft="2dp"
                 android:paddingTop="2dp"
                 android:paddingBottom="2dp"
@@ -190,14 +186,14 @@
 
             <EditText
                 android:id="@+id/transmissionValueTextView"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="7"
+                android:layout_weight="1"
                 android:hint="@string/transmission"
                 android:paddingLeft="5dp"
                 android:paddingTop="5dp"
                 android:paddingBottom="5dp"
-                android:textSize="18sp" />
+                android:textSize="14sp" />
         </LinearLayout>
 
     </LinearLayout>
