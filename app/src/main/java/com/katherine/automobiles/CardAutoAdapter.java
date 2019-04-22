@@ -85,9 +85,11 @@ public class CardAutoAdapter extends CardAdapter {
             uri = Uri.fromFile(f);
             photoImageView.setImageURI(null);
             photoImageView.setImageURI(uri);
+            photoImageView.setVisibility(View.VISIBLE);
 
-        }catch (Exception ex){}
-
+        }catch (Exception ex){
+            photoImageView.setVisibility(View.GONE);
+        }
 
     }
     @Override

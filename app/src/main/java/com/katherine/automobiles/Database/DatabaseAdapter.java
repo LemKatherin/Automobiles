@@ -88,46 +88,6 @@ public class DatabaseAdapter {
             cursor.close();
             return null;
         }
-        /*Cursor cursor = database.query("Automobiles",
-                new String[]{"_id", "AutoModel", "_idBrand", "Photo", "ProductYear", "Seats", "_idBodyStyle", "FuelType", "Transmission", "Price"},
-                null,null,null,null,"_idBrand");
-        if(cursor.getCount() != 0) {
-            cursor.moveToFirst();
-            for (int i = 0; i < cursor.getCount(); i++) {
-
-
-                Automobile automobile = new Automobile(cursor.getInt(0), cursor.getString(1), cursor.getString(3), cursor.getInt(4), cursor.getInt(5), cursor.getString(7), cursor.getString(8), cursor.getDouble(9));
-
-                String idBrand = cursor.getString(2);
-                String idBodyStyle = cursor.getString(6);
-
-                Cursor smallCursor = database.rawQuery("select Brands._id, Brand, Manufacturers._id, Manufacturer " +
-                        "from Brands join Manufacturers on Brands._idManufacturer = Manufacturers._id " +
-                        "where Brands._id = ? ", new String[]{idBrand});
-                smallCursor.moveToFirst();
-                automobile.setBrand(new Brand(smallCursor.getInt(0), smallCursor.getString(1), new Manufacturer(smallCursor.getInt(2), smallCursor.getString(3))));
-
-                smallCursor = database.rawQuery("select _id, BodyStyle  " +
-                        "from BodyStyles " +
-                        "where _id = ? ", new String[]{idBodyStyle});
-
-                smallCursor.moveToFirst();
-                automobile.setBodyStyle(new BodyStyle(smallCursor.getInt(0), smallCursor.getString(1)));
-
-                automobiles.add(automobile);
-                smallCursor.close();
-
-                cursor.moveToNext();
-            }
-            cursor.close();
-            return automobiles;
-        } else{
-            cursor.close();
-            return null;
-        }*/
-
-
-
     }
 
     public ArrayList<CommonEntity> getAutoes(String search){
@@ -139,7 +99,7 @@ public class DatabaseAdapter {
                 "from Automobiles join Brands on _idBrand = Brands._id " +
                 "join Manufacturers on Brands._idManufacturer = Manufacturers._id " +
                 "join BodyStyles on _idBodyStyle = BodyStyles._id " +
-                "where Automodel like ?" +
+                "where Brand || ' ' || Automodel like ?" +
                 "order by Brand", new String[]{"%" + search + "%"});
         if(cursor.getCount() != 0) {
             cursor.moveToFirst();

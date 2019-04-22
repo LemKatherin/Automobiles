@@ -290,6 +290,7 @@ public class MainActivity extends AppCompatActivity implements ActivityView {
     @Override
     public void onDestroy(){
         presenter.detachView();
+        DatabaseAdapter.getInstance().close();
         super.onDestroy();
     }
 }
