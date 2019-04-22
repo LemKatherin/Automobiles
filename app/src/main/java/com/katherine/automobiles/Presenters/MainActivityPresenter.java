@@ -1,7 +1,5 @@
 package com.katherine.automobiles.Presenters;
 
-import android.view.View;
-
 import com.katherine.automobiles.DataMappers.AutomobileMapper;
 import com.katherine.automobiles.DataMappers.BodyStyleMapper;
 import com.katherine.automobiles.DataMappers.BrandMapper;
@@ -12,7 +10,7 @@ import com.katherine.automobiles.Views.ActivityView;
 import java.util.ArrayList;
 
 /**
- * Presenter - для связи БД и главной активности MainActivity
+ * Presenter - для связи БД и главной активности MainActivity.
  */
 
 public class MainActivityPresenter {
@@ -39,6 +37,7 @@ public class MainActivityPresenter {
         this.activityView = activityView;
     }
 
+            // устанавливаем с чем конкретно будем работать
     public void setDataModel(MAPPERS mapper) {
         switch (mapper){
             case AUTOMOBILE:
@@ -55,10 +54,12 @@ public class MainActivityPresenter {
         }
     }
 
+            // если активность удалена
     public void detachView() {
         activityView = null;
     }
 
+            // возвращает текст ждя заполнения CardView для RecyclerView
     public ArrayList<String[]> getCardContent(MAPPERS mapper){
         ArrayList<String[]> cardContent = new ArrayList<>();
         switch (mapper){
@@ -78,6 +79,7 @@ public class MainActivityPresenter {
         return cardContent;
     }
 
+            // возвращает отсортироанный по пораметру текст ждя заполнения CardView для RecyclerView
     public ArrayList<String[]> getCardContentSorted(MAPPERS mapper, FILTERS filter){
         ArrayList<String[]> cardContent = new ArrayList<>();
         switch (mapper){
@@ -93,7 +95,7 @@ public class MainActivityPresenter {
         return cardContent;
     }
 
-
+            // запрос на поиск
     public ArrayList<String[]> searchQuery(FILTERS filter,String query){
         ArrayList<String[]> cardContent = new ArrayList<>();
         if(!query.isEmpty()) {
@@ -111,6 +113,7 @@ public class MainActivityPresenter {
         return cardContent;
     }
 
+            // фильтрация записей
     public ArrayList<String[]> filter(FILTERS filter, ArrayList<String> query){
         ArrayList<String[]> cardContent = new ArrayList<>();
 
@@ -143,6 +146,7 @@ public class MainActivityPresenter {
         return cardContent;
     }
 
+            // удаление записи
     public void removeItem(String id){
         dataModel = new AutomobileMapper();
         dataModel.delete(id);

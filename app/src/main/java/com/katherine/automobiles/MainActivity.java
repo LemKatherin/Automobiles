@@ -37,6 +37,8 @@ public class MainActivity extends AppCompatActivity implements ActivityView {
     private RecyclerView autoesRecyclerView;
 
     private MainActivityPresenter presenter;
+
+            // Полные списки данных для RecyclerViews, чтобы не доставать их из БД каждый раз заново
     private ArrayList<String[]> allAutoes = new ArrayList<>();
     private ArrayList<String[]> allBrands = new ArrayList<>();
     private ArrayList<String[]> allManufactures = new ArrayList<>();
@@ -158,6 +160,7 @@ public class MainActivity extends AppCompatActivity implements ActivityView {
 
     }
 
+            // разрешение зависимости между производителями и марками
     public void setChecks(RecyclerView recyclerView){
 
         if(recyclerView == brandsRecyclerView) {

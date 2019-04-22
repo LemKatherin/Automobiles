@@ -7,8 +7,6 @@ import com.katherine.automobiles.Entities.CommonEntity;
 import java.util.ArrayList;
 
 public class AutomobileMapper extends DataMapper {
-    
-
 
     public AutomobileMapper() { }
 

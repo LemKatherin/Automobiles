@@ -1,8 +1,5 @@
 package com.katherine.automobiles;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.v7.widget.CardView;
 import android.view.ContextMenu;
@@ -13,9 +10,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.File;
-import java.io.InputStream;
 import java.util.ArrayList;
 
+/**
+ * Карточка для отображения данных об автомобиле.
+ */
 public class CardAutoAdapter extends CardAdapter {
 
     private TextView modelTextView;
@@ -29,10 +28,7 @@ public class CardAutoAdapter extends CardAdapter {
 
 
 
-    public CardAutoAdapter(ArrayList<String[]> contents) {
-        this.contents = contents;
-
-    }
+    public CardAutoAdapter(ArrayList<String[]> contents) { this.contents = contents; }
 
 
     @Override
@@ -72,13 +68,16 @@ public class CardAutoAdapter extends CardAdapter {
         transmissionValueTextView = cardView.findViewById(R.id.transmissionValueTextView);
         priceValueTextView = cardView.findViewById(R.id.priceValueTextView);
 
-        modelTextView.setText(contents.get(position)[1] + " " + contents.get(position)[2]);
-        yearValueTextView.setText(contents.get(position)[4]);
-        seatsValueTextView.setText(contents.get(position)[5]);
+        modelTextView.setText(String.format("%s %s", contents.get(position)[1], contents.get(position)[2]));
+        if(!contents.get(position)[4].equals("0"))
+            yearValueTextView.setText(contents.get(position)[4]);
+        if(!contents.get(position)[5].equals("0"))
+            seatsValueTextView.setText(contents.get(position)[5]);
         bodyValueTextView.setText(contents.get(position)[6]);
         fuelValueTextView.setText(contents.get(position)[7]);
         transmissionValueTextView.setText(contents.get(position)[8]);
-        priceValueTextView.setText(contents.get(position)[9]);
+        if(!contents.get(position)[9].equals("0.0"))
+            priceValueTextView.setText(contents.get(position)[9]);
         try {
             Uri uri;
             File f = new File(contents.get(position)[3]);

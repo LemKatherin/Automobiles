@@ -1,11 +1,15 @@
 package com.katherine.automobiles;
 
-
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+
+/**
+ * Класс адаптер для CardView в RecyclerView.
+ * От него наследуются все классы адаптеры для конкретных CardView
+ */
 
 public abstract class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
 

@@ -30,10 +30,9 @@ public class NewEntityActivityPresenter {
         MANUFACTURER
     }
 
-    public NewEntityActivityPresenter(NewActivityView newActivityView) {
-        this.newActivityView = newActivityView;
-    }
+    public NewEntityActivityPresenter(NewActivityView newActivityView) { this.newActivityView = newActivityView; }
 
+            // устанавливаем с чем конкретно будем работать
     public void setDataModel(MAPPERS mapper) {
         switch (mapper){
             case AUTOMOBILE:
@@ -50,13 +49,14 @@ public class NewEntityActivityPresenter {
         }
     }
 
+            // если активность удалена
     public void detachView() {
         newActivityView = null;
         dataModel = null;
     }
 
+            // проверка, можно ли сохранить запись, когда только название обязательно
     public boolean checkToSave(String titleStr){
-
         try{
             if(titleStr.isEmpty())
                 throw new Exception("Введите название!");
@@ -68,6 +68,7 @@ public class NewEntityActivityPresenter {
 
     }
 
+            // получает массив значений для Spinner и возвращет его активности
     public ArrayList<CommonEntity> setSpinnerList(Spinner spinner){
         ArrayList<CommonEntity> entities = dataModel.find(DataMapper.CRITERIA.ALL,"");
         String[] values = CommonEntity.toNameArray(entities);
@@ -79,15 +80,17 @@ public class NewEntityActivityPresenter {
         return dataModel.findById(id);
     }
 
+            // добавление новой записи
     public void save(){ dataModel.insert(newActivityView.getNewEntity()); }
 
+            // изменение существующей записи
     public void update(){
         dataModel.update(newActivityView.getNewEntity());
     }
 
+            // нажатие на ImageView для загрузки изображения из галереи
     public void onImageClick(){
         newActivityView.openGallery();
     }
-
 
 }
