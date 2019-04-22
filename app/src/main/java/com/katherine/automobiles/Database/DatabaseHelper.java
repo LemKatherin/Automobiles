@@ -13,6 +13,9 @@ import java.util.ArrayList;
 
 import static android.support.constraint.Constraints.TAG;
 
+/**
+ * Класс для создания БД.
+ */
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static String DB_PATH; // полный путь к базе данных

@@ -1,5 +1,7 @@
 package com.katherine.automobiles.Presenters;
 
+import android.view.View;
+
 import com.katherine.automobiles.DataMappers.AutomobileMapper;
 import com.katherine.automobiles.DataMappers.BodyStyleMapper;
 import com.katherine.automobiles.DataMappers.BrandMapper;
@@ -8,6 +10,10 @@ import com.katherine.automobiles.DataMappers.ManufacturerMapper;
 import com.katherine.automobiles.Views.ActivityView;
 
 import java.util.ArrayList;
+
+/**
+ * Presenter - для связи БД и главной активности MainActivity
+ */
 
 public class MainActivityPresenter {
 

@@ -5,6 +5,11 @@ import com.katherine.automobiles.Entities.CommonEntity;
 
 import java.util.ArrayList;
 
+/**
+ * Класс для связи между приложением и БД.
+ * Каждая сущность имеет свой класс (наследник этого) для работы со связанными с ней таблицами.
+ */
+
 public abstract class DataMapper {
 
     public enum CRITERIA{

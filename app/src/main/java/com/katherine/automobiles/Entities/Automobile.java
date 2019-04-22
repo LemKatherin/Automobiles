@@ -3,12 +3,12 @@ package com.katherine.automobiles.Entities;
 public class Automobile extends CommonEntity {
 
     private Brand brand;
-    private String photo = "";
+    private String photo;
     private int productYear;
     private int seats;
     private BodyStyle bodyStyle;
-    private String fuelType = "";
-    private String transmission = "";
+    private String fuelType;
+    private String transmission;
     private double price;
 
     public Automobile() { }

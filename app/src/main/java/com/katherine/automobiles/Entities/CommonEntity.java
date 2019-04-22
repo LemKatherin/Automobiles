@@ -2,10 +2,14 @@ package com.katherine.automobiles.Entities;
 
 import java.util.ArrayList;
 
+/**
+ * Класс сущность.
+ */
+
 public class CommonEntity {
 
     protected int id;
-    protected String name = "";
+    protected String name;
 
     public int getId() {
         return id;

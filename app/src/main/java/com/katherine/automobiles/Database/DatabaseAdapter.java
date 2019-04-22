@@ -14,6 +14,11 @@ import com.katherine.automobiles.Entities.Manufacturer;
 
 import java.util.ArrayList;
 
+/** Класс для работы с БД.
+ * Открывает и закрывает соединение с БД.
+ * Осуществляет запросы на получение, загрузку и изменение данных.
+ * **/
+
 public class DatabaseAdapter {
 
     private DatabaseHelper dbHelper;

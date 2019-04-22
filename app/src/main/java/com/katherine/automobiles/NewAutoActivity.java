@@ -13,6 +13,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -40,8 +41,9 @@ import java.io.InputStream;
 import java.util.ArrayList;
 
 public class NewAutoActivity extends NewActivityView {
-    static final int GALLERY_REQUEST = 1;
+
     public static final String AUTO_ID = "autoID";
+    static final String TAG = "NewAutoActivity";
 
     private Spinner brandSpinner;
     private TextView modelTextView;
@@ -73,49 +75,81 @@ public class NewAutoActivity extends NewActivityView {
 
         try {
             String autoID = getIntent().getExtras().get(AUTO_ID).toString();
-
-            AutomobileMapper automobileMapper = new AutomobileMapper();
-            newEntity = automobileMapper.findById(autoID);
-
-            modelTextView.setText(newEntity.getName());
-            try {
-                yearValueTextView.setText(String.valueOf(((Automobile) newEntity).getProductYear()));
-            }catch (Exception ex){}
-            try {
-                seatsValueTextView.setText(String.valueOf(((Automobile)newEntity).getSeats()));
-            }catch (Exception ex){}
-            try {
-                fuelValueTextView.setText(((Automobile)newEntity).getFuelType());
-            }catch (Exception ex){}
-            try {
-                transmissionValueTextView.setText(((Automobile)newEntity).getFuelType());
-            }catch (Exception ex){}
-            try {
-                priceValueTextView.setText(String.valueOf(((Automobile)newEntity).getPrice()));
-            }catch (Exception ex){}
-            try {
-                for(int i = 0; i < brandSpinner.getAdapter().getCount(); i++){
-                    if(((Automobile)newEntity).getBrand().getName().equals(brandSpinner.getAdapter().getItem(i).toString())){
-                        brandSpinner.setSelection(i);
-                        break;
-                    }
-                }
-            }catch (Exception ex){}
-
-            try {
-                for(int i = 0; i < bodyStyleSpinner.getAdapter().getCount(); i++){
-                    if(((Automobile)newEntity).getBodyStyle().getName().equals(bodyStyleSpinner.getAdapter().getItem(i).toString())){
-                        bodyStyleSpinner.setSelection(i);
-                        break;
-                    }
-                }
-            }catch (Exception ex){}
-
-
-
-        } catch (Exception ex){}
+            setToUpdate(autoID);
+        } catch (Exception ex){
+            Log.w(TAG , ex.getMessage());
+        }
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    public void logW(View view, String ex){
+        Log.w(TAG + " " + view.getTag().toString(), ex);
+    }
+
+    private void setToUpdate(String autoID){
+
+        presenter.setDataModel(NewEntityActivityPresenter.MAPPERS.AUTOMOBILE);
+        newEntity = presenter.getEntity(autoID);
+
+        modelTextView.setText(newEntity.getName());
+        try {
+            yearValueTextView.setText(String.valueOf(((Automobile) newEntity).getProductYear()));
+        }catch (Exception ex){
+            logW(yearValueTextView, ex.getMessage());
+        }
+        try {
+            seatsValueTextView.setText(String.valueOf(((Automobile)newEntity).getSeats()));
+        }catch (Exception ex){
+            logW(seatsValueTextView, ex.getMessage());
+        }
+        try {
+            fuelValueTextView.setText(((Automobile)newEntity).getFuelType());
+        }catch (Exception ex){
+            logW(fuelValueTextView, ex.getMessage());
+        }
+        try {
+            transmissionValueTextView.setText(((Automobile)newEntity).getFuelType());
+        }catch (Exception ex){
+            logW(transmissionValueTextView, ex.getMessage());
+        }
+        try {
+            priceValueTextView.setText(String.valueOf(((Automobile)newEntity).getPrice()));
+        }catch (Exception ex){
+            logW(priceValueTextView, ex.getMessage());
+        }
+
+        try {
+            for(int i = 0; i < brandSpinner.getAdapter().getCount(); i++){
+                if(((Automobile)newEntity).getBrand().getName().equals(brandSpinner.getAdapter().getItem(i).toString())){
+                    brandSpinner.setSelection(i);
+                    break;
+                }
+            }
+        }catch (Exception ex){
+            logW(brandSpinner, ex.getMessage());
+        }
+
+        try {
+            for(int i = 0; i < bodyStyleSpinner.getAdapter().getCount(); i++){
+                if(((Automobile)newEntity).getBodyStyle().getName().equals(bodyStyleSpinner.getAdapter().getItem(i).toString())){
+                    bodyStyleSpinner.setSelection(i);
+                    break;
+                }
+            }
+        }catch (Exception ex){
+            logW(bodyStyleSpinner, ex.getMessage());
+        }
+
+        try {
+            Uri uri;
+            File f = new File(((Automobile)newEntity).getPhoto());
+            uri = Uri.fromFile(f);
+            photoImageView.setImageURI(null);
+            photoImageView.setImageURI(uri);
+        }catch (Exception ex){
+            logW(photoImageView, ex.getMessage());
+        }
     }
 
     private void initActivity(){
@@ -129,24 +163,15 @@ public class NewAutoActivity extends NewActivityView {
         transmissionValueTextView = (TextView) findViewById(R.id.transmissionValueTextView);
         priceValueTextView = (TextView) findViewById(R.id.priceValueTextView);
 
-        File extStore = Environment.getExternalStorageDirectory();
-
         photoImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
-                photoPickerIntent.setType("image/*");
-                startActivityForResult(photoPickerIntent, GALLERY_REQUEST);
+                presenter.onImageClick();
             }
         });
 
         presenter.setDataModel(NewEntityActivityPresenter.MAPPERS.BRAND);
-        final ArrayList<CommonEntity> brandEntities = presenter.setSpinnerList();
-
-        String[] names = CommonEntity.toNameArray(brandEntities);
-        ArrayAdapter<String> arrayAdapterBrand = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, names);
-        arrayAdapterBrand.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        brandSpinner.setAdapter(arrayAdapterBrand);
+        final ArrayList<CommonEntity> brandEntities = presenter.setSpinnerList(brandSpinner);
 
         brandSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -161,12 +186,8 @@ public class NewAutoActivity extends NewActivityView {
         });
 
         presenter.setDataModel(NewEntityActivityPresenter.MAPPERS.BODYSTYLE);
-        final ArrayList<CommonEntity> bodyEntities = presenter.setSpinnerList();
+        final ArrayList<CommonEntity> bodyEntities = presenter.setSpinnerList(bodyStyleSpinner);
 
-        names = CommonEntity.toNameArray(bodyEntities);
-        ArrayAdapter<String> arrayAdapterBody = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, names);
-        arrayAdapterBody.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        bodyStyleSpinner.setAdapter(arrayAdapterBody);
 
         bodyStyleSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -216,23 +237,35 @@ public class NewAutoActivity extends NewActivityView {
                     newEntity.setName(modelTextView.getText().toString());
                     try {
                         ((Automobile) newEntity).setProductYear(Integer.valueOf(yearValueTextView.getText().toString()));
-                    }catch (Exception ex) {}
+                    }catch (Exception ex) {
+                        logW(yearValueTextView, ex.getMessage());
+                    }
                     try {
                         ((Automobile)newEntity).setSeats(Integer.valueOf(seatsValueTextView.getText().toString()));
-                    }catch (Exception ex) {}
+                    }catch (Exception ex) {
+                        logW(seatsValueTextView, ex.getMessage());
+                    }
                     try {
                         ((Automobile)newEntity).setFuelType(fuelValueTextView.getText().toString());
-                    }catch (Exception ex) {}
+                    }catch (Exception ex) {
+                        logW(fuelValueTextView, ex.getMessage());
+                    }
                     try {
                         ((Automobile)newEntity).setTransmission(transmissionValueTextView.getText().toString());
-                    }catch (Exception ex) {}
+                    }catch (Exception ex) {
+                        logW(transmissionValueTextView, ex.getMessage());
+                    }
                     try {
                         ((Automobile)newEntity).setPrice(Double.valueOf(priceValueTextView.getText().toString()));
-                    }catch (Exception ex) {}
+                    }catch (Exception ex) {
+                        logW(priceValueTextView, ex.getMessage());
+                    }
 
                     try {
                         ((Automobile)newEntity).setPhoto(imagePath);
-                    }catch (Exception ex) {}
+                    }catch (Exception ex) {
+                        logW(photoImageView, ex.getMessage());
+                    }
 
                     if(newEntity.getId() == 0)
                         presenter.save();
@@ -263,7 +296,6 @@ public class NewAutoActivity extends NewActivityView {
                             File f = new File(imagePath);
                             photoImageUri = Uri.fromFile(f);
                         }
-
                         photoImageView.setImageURI(photoImageUri);
                     }catch (Exception e) {
                         e.printStackTrace();
@@ -276,6 +308,13 @@ public class NewAutoActivity extends NewActivityView {
     public void showToast(String text) {
         Toast.makeText(getApplicationContext(), text,
                 Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void setSpinner(Spinner spinner, String[] values) {
+        ArrayAdapter<String> arrayAdapterBody = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, values);
+        arrayAdapterBody.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(arrayAdapterBody);
     }
 
     @Override
