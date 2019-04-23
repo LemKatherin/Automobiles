@@ -82,6 +82,7 @@ public class MainActivity extends AppCompatActivity implements ActivityView {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 changeViewVisibility(brandsRecyclerView);
                 if(!isChecked){
+                    priceCheckBox.setChecked(false);
                     ((CardAdapter) brandsRecyclerView.getAdapter()).setContents(allBrands);
                     ((CardsTextCheckAdapter) brandsRecyclerView.getAdapter()).getChecked().clear();
 
@@ -97,6 +98,7 @@ public class MainActivity extends AppCompatActivity implements ActivityView {
         manufacturersCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                priceCheckBox.setChecked(false);
                 changeViewVisibility(manufacturersRecyclerView);
                 if(!isChecked){
                     ((CardAdapter) manufacturersRecyclerView.getAdapter()).setContents(allManufactures);
