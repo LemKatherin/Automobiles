@@ -16,4 +16,10 @@
    5. Поиск по марке и/или модели.
    6. Сортировка по цене (от мин к макс)
    7. Фильтрация по производителю и по марке.
+
+Изначально в БД приложения находится: 
+  * 3 производителя: Germany, USA, Great Britain;
+  * 8 типов кузова: Coupe, Convertible, Hatchback, tation wagon, Crossover, Cabriolet, Sedan, Suv, Minivan, Pickup, Van, Bus, MiniBus;
+  * 8 марок автомобилей: Germany(Mercedes-Benz, Opel, Audi), USA(Ford, Chevrolet), Great Britain(Mini, Jaguar, Bentley);
+  * 12 автомобилей.
    
