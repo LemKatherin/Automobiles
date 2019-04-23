@@ -19,7 +19,7 @@
 
 Изначально в БД приложения находится: 
   * 3 производителя: Germany, USA, Great Britain;
-  * 8 типов кузова: Coupe, Convertible, Hatchback, tation wagon, Crossover, Cabriolet, Sedan, Suv, Minivan, Pickup, Van, Bus, MiniBus;
+  * 8 типов кузова: Coupe, Convertible, Hatchback, Station wagon, Crossover, Cabriolet, Sedan, Suv, Minivan, Pickup, Van, Bus, MiniBus;
   * 8 марок автомобилей: Germany(Mercedes-Benz, Opel, Audi), USA(Ford, Chevrolet), Great Britain(Mini, Jaguar, Bentley);
   * 12 автомобилей.
    
