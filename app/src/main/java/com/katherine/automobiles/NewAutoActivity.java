@@ -270,7 +270,8 @@ public class NewAutoActivity extends NewActivityView {
                     }
 
                     try {
-                        ((Automobile)newEntity).setPhoto(imagePath);
+                        if(imagePath != null)
+                            ((Automobile)newEntity).setPhoto(imagePath);
                     }catch (Exception ex) {
                         logW(photoImageView, ex.getMessage());
                     }
