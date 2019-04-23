@@ -1,5 +1,7 @@
 package com.katherine.automobiles;
 
+import android.content.res.AssetManager;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.v7.widget.CardView;
 import android.view.ContextMenu;
@@ -10,6 +12,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 
 /**
@@ -78,17 +85,36 @@ public class CardAutoAdapter extends CardAdapter {
         transmissionValueTextView.setText(contents.get(position)[8]);
         if(!contents.get(position)[9].equals("0.0"))
             priceValueTextView.setText(contents.get(position)[9]);
-        try {
-            Uri uri;
-            File f = new File(contents.get(position)[3]);
-            uri = Uri.fromFile(f);
-            photoImageView.setImageURI(null);
-            photoImageView.setImageURI(uri);
-            photoImageView.setVisibility(View.VISIBLE);
 
-        }catch (Exception ex){
-            photoImageView.setVisibility(View.GONE);
+        String filename =  contents.get(position)[3];
+        InputStream inputStream = null;
+
+        try {
+            inputStream = cardView.getContext().getAssets().open(filename);
+            Drawable d = Drawable.createFromStream(inputStream, null);
+            photoImageView.setImageDrawable(d);
+        } catch (IOException e) {
+            if(!contents.get(position)[3].isEmpty()){
+                Uri uri;
+                File f = new File(contents.get(position)[3]);
+                uri = Uri.fromFile(f);
+                photoImageView.setImageURI(null);
+                photoImageView.setImageURI(uri);
+                photoImageView.setVisibility(View.VISIBLE);
+            }else{
+                photoImageView.setVisibility(View.GONE);
+            }
+            e.printStackTrace();
+        } finally {
+            try {
+                if (inputStream != null)
+                    inputStream.close();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
         }
+
+
 
     }
     @Override
